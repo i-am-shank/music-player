@@ -1,0 +1,331 @@
+/* While importing fonts, try to do all of them together. */
+
+/* Fonts :- */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;1,300&display=swap');
+/* font-family: 'Ubuntu', sans-serif; */
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+/* font-family: 'Varela Round', sans-serif; */
+
+body{
+    /* background-color:antiquewhite; */
+    background:linear-gradient(RGB(17 55 6), RGB(15 43 7), black);
+}
+
+/* Universal-selector --> good practice */
+*{
+    margin:0;
+    padding:0;
+}
+
+/* Change the overall navigation-bar font */
+nav{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+nav ul{
+    display: flex;
+    /* By default, flex-direction:row */
+    align-items: center;
+    list-style-type: none;
+    /* To remove the list pointer icon. */
+    height: 65px;
+    background-color: black;
+    color:white; /* font-color */
+}
+
+/* To improve horizontal spacing between "logo-name", "Home", "About" */
+nav ul li{
+    padding: 0 12px;
+    /* Up-Down , Left-Right -- 2-values */
+}
+
+/* Adjust the size of logo-image */
+.brand img{
+    width:44px;
+    /* To improve spacing between logo & "name" in nav-bar. */
+    padding: 0 4px;
+}
+
+/* To bring text "Spotify" to vertical-center of navigation bar. */
+.brand{
+    display: flex;
+    align-items: center;
+    font-weight:bolder;
+    /* To make "Spotify" larger than other texts in nav-bar. */
+    font-size:larger;
+}
+
+/* To send song-player to bottom */
+.container{
+    /* Setting this will help bottom: 0; of .bottom class to send it to bottom */
+    min-height: 60vh;
+    /* As there aren't that much content in container right now,
+    So, it is getting placed at top (including song-player */
+    background-color: black;
+    color: white;
+    /* Dark mode of container */
+    font-family: 'Varela Round', sans-serif;
+    /* Saved font-family from Google-fonts. */
+    display: flex;
+    /* To better the showcase of songs inside container */
+    margin: 23px auto;
+    /* Top-bottom = 23px , Left = Right (as auto) */
+    width: 80%;
+    border-radius: 12px;
+    padding:34px;
+    /* For better placing of text inside container */
+    /* background-image: url("images/bg.jpg"); */
+    background-image: url("images/bg_cd.jpg");
+    background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+
+.songList{
+    width: 40%;
+}
+
+.songList h1{
+    color:lightgray;
+    font-size: 53px;
+}
+
+/* To fit the song-image to a better smaller size. */
+.songItem{
+    cursor:default;
+    /* Prevents cursor from changing to text-editor cursor. */
+    height:32px;
+    display:flex;
+    background-color: grey;
+    color:black;
+    /* As bg got white */
+    margin:12px 0;
+    /* Only putting top-bottom margin */
+    padding: 11px 7px;
+    font-size: 16px;
+    text-align: center;
+    /* To get a better visual of text-inside */
+    justify-content:space-between;
+    align-items: center;
+    /* Align-items helped image to scale back. */
+    border-radius: 7px;
+    /* To better the look of song-block */
+}
+
+.songItem:hover{
+    /* background-color: antiquewhite; */
+    background-color: lightgray;
+    scale:1.02;
+    transition-duration: 0.3s;
+}
+
+.artist-name{
+    font-size:small;
+    font-weight:lighter;
+    color:darkslategray;
+}
+
+.artist-name:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.songItem img{
+    width: 43px;
+    margin: 0 10px 0 3px;
+    /* Giving top-right-bottom-left margins to song-image */
+    border-radius:43px;
+}
+
+.songItem i:hover{
+    cursor:pointer;
+    scale:1.1;
+}
+
+/* Song time-stamp */
+.timestamp{
+    margin: 0 23px;
+    align-self:center;
+}
+
+.songlistplay{
+    justify-self: flex-end;
+    /* align-self: flex-end; */
+}
+
+.song-name{
+    min-width:40%;
+}
+
+.songItemContainer{
+    margin-top:50px;
+}
+
+
+
+
+/* Styling song-player */
+/* Coloring black */
+.bottom{
+    position: sticky;
+    height: 130px;
+    padding: 0 15px;
+    background-color: black;
+    bottom: 0;
+    display: flex;
+    /* To center the song-player in it. */
+    justify-content: space-between;
+    align-items:center;
+    /* Both will set song-player to horz & vert-center. */
+    color:white;
+}
+
+/* To increase separation between progress-bar & play-prev-next buttons */
+.icons {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* margin-left: 32.5%; */
+}
+
+.controls{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+    /* Fixing width, as buttons are getting aligned according to their hidden hover text-size */
+}
+
+.hover-btn-text{
+    font-family: 'Varela Round', sans-serif;
+    background-color: darkslategray;
+    border-radius:2px;
+    padding:4px;
+    text-align: center;
+    width:auto;
+    font-size:smaller;
+    margin-bottom:10px;
+    opacity:0; /* will do 1 when hover */
+    transition: opacity 0.2s ease-in;
+    /* Putting some transition time */
+}
+
+/* Switch cursor to hand.. over play-prev-next buttons */
+.icons i{
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.icons .fa-circle-play:hover , .icons .fa-circle-pause:hover{
+    scale:1.1;
+    transition:0.1s;
+}
+
+.icons .fa-backward-step , .icons .fa-forward-step {
+    color:gray;
+    scale:1.3;
+}
+
+.icons .fa-backward-step:hover , .icons .fa-forward-step:hover {
+    scale:1.3;
+    color:white;
+    transition:0.3s;
+}
+
+.progress-and-icons{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    margin-right:7%;
+}
+
+.songInfo{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top:8px;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.current-song-name{
+    margin-bottom:3px;
+}
+
+.current-song-name:hover{
+    cursor:pointer;
+    text-decoration: underline;
+}
+
+.current-artist{
+    font-size:small;
+    color:olive;
+    margin-top:3px;
+}
+
+.current-artist:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.song-playing{
+    width:100%;
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.current-song-cover{
+    width:80px;
+    margin-left:10px;
+    /* border:solid 2px gray; */
+    border-left: solid 4px darkolivegreen;
+    padding-left:4px;
+
+}
+
+
+.player-gif{
+    opacity:0; /* will do 1 when song playss */
+    transition: opacity 0.7s ease-in;
+}
+
+#songProgressBar {
+    width: 35vw;
+    height:4px;
+    /* text-align: center; */
+    /* If this was a container.. this would have centered the text inside this. But here it won't work */
+    /* To center the content, can use flex-box */
+    cursor: pointer;
+    margin-bottom:10px;
+}
+
+/* Styling progress-bar using kit of HTML5 progress bar. (some specified selectors are there) */
+#songProgressBar::-webkit-progress-bar {
+    background-color:gray;
+    border-radius: 7px;
+}
+
+#songProgressBar::-webkit-progress-value {
+    background-color:green;
+    color:green;
+}
+
+.volume{
+    display:flex;
+    color:white;
+    align-items: center;
+}
+
+.volume .fa-volume{
+    height:8px;
+    color: white;
+    margin-bottom: 1px;
+}
+
+#volumeProgressBar{
+    height:4px;
+    width:6vw;
+    margin-right:5px;
+    margin-top:25px;
+}
