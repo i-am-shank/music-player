@@ -24,11 +24,12 @@ var playPauseText = document.getElementsByClassName("play-pause-text")[0];
 var songs = [
     {songName: "Bandeh", artist: "Indian Ocean", duration:"7:48", filePath: "songs/Bandeh_IndianOcean.mp3", coverPath: "covers/Bandeh_IndianOcean.jpg"},
     {songName: "Krishna", artist:"Colonial Cousins", duration:"5:50", filePath: "songs/Krishna_ColonialCousins.mp3", coverPath: "covers/Krishna_ColonialCousins.jpg"},
+    {songName: "O Sanam", artist:"Lucky Ali", duration:"3:43", filePath: "songs/OSanam_LuckyAli.mp3", coverPath: "covers/OSanam_LuckyAli.jpg"},
     {songName: "Dooba Dooba", artist: "Silk Route", duration:"5:01", filePath: "songs/DoobaDooba_SilkRoute.mp3", coverPath: "covers/DoobaDooba_SilkRoute.jpg"},
     {songName: "Aap Ki Dua", artist:"KK", duration:"4:18", filePath: "songs/AapKiDua_KK.mp3", coverPath: "covers/AapKiDua_KK.jpg"},
+    {songName: "Bangalore Blues", artist:"Thermal And A Quarter", duration:"6:10", filePath: "songs/BangaloreBlues_TAAQ.mp3", coverPath: "covers/BangaloreBlues_TAAQ.jpg"},
     {songName: "Totial Manmotia", artist:"Rabbi Shergill", duration:"4:28", filePath: "songs/TotiaManmotia_RabbiShergill.mp3", coverPath: "covers/TotiaManmotia_RabbiShergill.jpg"},
     {songName: "The Prices", artist:"Soulmate", duration:"3:28", filePath: "songs/ThePrice_Soulmate.mp3", coverPath: "covers/ThePrice_Soulmate.jpg"},
-    {songName: "Bangalore Blues", artist:"Thermal And A Quarter", duration:"6:10", filePath: "songs/BangaloreBlues_TAAQ.mp3", coverPath: "covers/BangaloreBlues_TAAQ.jpg"},
     {songName: "Ghir Ghir", artist:"Advaita", duration:"5:05", filePath: "songs/GhirGhir_Advaita.mp3", coverPath: "covers/GhirGhir_Advaita.jpg"},
     {songName: "Dilnawaz", artist:"The Local Train", duration:"3:27", filePath: "songs/Dilnawaz_TLT.mp3", coverPath: "covers/Dilnawaz_TLT.jpg"},
     {songName: "Brown Man's Funk", artist:"The Revisit Project", duration:"3:26", filePath: "songs/BrownMansFunk_TRP.mp3", coverPath: "covers/BrownMansFunk_TRP.jpg"}
@@ -202,10 +203,10 @@ prevBtn.addEventListener("click", ()=>{
         currSongIndex = 0; // first initialize
     }
     if(currSongIndex == 0) {
-        currSongIndex = 9;
+        currSongIndex = 10;
     }
     else {
-        currSongIndex = ((currSongIndex - 1) % 10);
+        currSongIndex = ((currSongIndex - 1) % 11);
     }
     currAudio.src = songs[currSongIndex].filePath;
     // Also update the bottom song-info.
@@ -240,7 +241,7 @@ nextBtn.addEventListener("click", ()=>{
     if(currSongIndex == -1) {
         currSongIndex = 0; // first initialize
     }
-    currSongIndex = ((currSongIndex + 1) % 10);
+    currSongIndex = ((currSongIndex + 1) % 11);
     currAudio.src = songs[currSongIndex].filePath;
     // Also update the bottom song-info.
     //    (showing which song is playing currently)
