@@ -28,7 +28,10 @@ var songs = [
     {songName: "Aap Ki Dua", artist:"KK", duration:"4:18", filePath: "songs/AapKiDua_KK.mp3", coverPath: "covers/AapKiDua_KK.jpg"},
     {songName: "Totial Manmotia", artist:"Rabbi Shergill", duration:"4:28", filePath: "songs/TotiaManmotia_RabbiShergill.mp3", coverPath: "covers/TotiaManmotia_RabbiShergill.jpg"},
     {songName: "The Prices", artist:"Soulmate", duration:"3:28", filePath: "songs/ThePrice_Soulmate.mp3", coverPath: "covers/ThePrice_Soulmate.jpg"},
-    {songName: "Dilnawaz", artist:"The Local Train", duration:"3:20", filePath: "songs/Dilnawaz_TLT.mp3", coverPath: "covers/Dilnawaz_TLT.jpg"},
+    {songName: "Bangalore Blues", artist:"Thermal And A Quarter", duration:"6:10", filePath: "songs/BangaloreBlues_TAAQ.mp3", coverPath: "covers/BangaloreBlues_TAAQ.jpg"},
+    {songName: "Ghir Ghir", artist:"Advaita", duration:"5:05", filePath: "songs/GhirGhir_Advaita.mp3", coverPath: "covers/GhirGhir_Advaita.jpg"},
+    {songName: "Dilnawaz", artist:"The Local Train", duration:"3:27", filePath: "songs/Dilnawaz_TLT.mp3", coverPath: "covers/Dilnawaz_TLT.jpg"},
+    {songName: "Brown Man's Funk", artist:"The Revisit Project", duration:"3:26", filePath: "songs/BrownMansFunk_TRP.mp3", coverPath: "covers/BrownMansFunk_TRP.jpg"}
 ]
 
 // Can also set cover-image, artist-name, and others for each song (in JS)
@@ -199,10 +202,10 @@ prevBtn.addEventListener("click", ()=>{
         currSongIndex = 0; // first initialize
     }
     if(currSongIndex == 0) {
-        currSongIndex = 6;
+        currSongIndex = 9;
     }
     else {
-        currSongIndex = ((currSongIndex - 1) % 7);
+        currSongIndex = ((currSongIndex - 1) % 10);
     }
     currAudio.src = songs[currSongIndex].filePath;
     // Also update the bottom song-info.
@@ -218,6 +221,13 @@ prevBtn.addEventListener("click", ()=>{
     currAudio.play();
     // Also start showing the gif
     playerGif.style.opacity = 1;
+    // Reset all buttons to play
+    makeAllPlayable();
+    // Now set the songItem-button to pause
+    var idstr = currSongIndex.toString();
+    var targetBtn = document.getElementById(idstr);
+    targetBtn.classList.remove("fa-circle-play");
+    targetBtn.classList.add("fa-circle-pause");
 })
 
 
@@ -230,7 +240,7 @@ nextBtn.addEventListener("click", ()=>{
     if(currSongIndex == -1) {
         currSongIndex = 0; // first initialize
     }
-    currSongIndex = ((currSongIndex + 1) % 7);
+    currSongIndex = ((currSongIndex + 1) % 10);
     currAudio.src = songs[currSongIndex].filePath;
     // Also update the bottom song-info.
     //    (showing which song is playing currently)
@@ -245,4 +255,11 @@ nextBtn.addEventListener("click", ()=>{
     currAudio.play();
     // Also start showing the gif
     playerGif.style.opacity = 1;
+    // Reset all buttons to play
+    makeAllPlayable();
+    // Now set the songItem-button to pause
+    var idstr = currSongIndex.toString();
+    var targetBtn = document.getElementById(idstr);
+    targetBtn.classList.remove("fa-circle-play");
+    targetBtn.classList.add("fa-circle-pause");
 })
