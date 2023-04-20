@@ -186,6 +186,10 @@ nav ul li{
     align-items:center;
     /* Both will set song-player to horz & vert-center. */
     color:white;
+    /* Also disabling text-selection, it just looks wierd */
+    -webkit-user-select: none;
+    user-select: none;
+    -ms-user-select: none;
 }
 
 /* To control the separation between progress-bar & play-prev-next buttons */
