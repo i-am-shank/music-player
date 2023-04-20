@@ -205,6 +205,10 @@ nav ul li{
     justify-content: space-between;
     width: 30%;
     /* Fixing width, as buttons are getting aligned according to their hidden hover text-size */
+    /* Also disabling text-selection, it just looks wierd */
+    -webkit-user-select: none;
+    user-select: none;
+    -ms-user-select: none;
 }
 
 .loop-image, .shuffle-image{
@@ -229,9 +233,13 @@ nav ul li{
 }
 
 /* Switch cursor to hand.. over play-prev-next buttons */
-.icons i, .loop-btn, .shuffle-btn{
+.icons i, .loop-image, .shuffle-image, .volume-btn{
     cursor: pointer;
     margin: 0 5px;
+}
+
+.loop-image, .shuffle-image{
+    margin-bottom: 17px;
 }
 
 .icons .fa-circle-play:hover , .icons .fa-circle-pause:hover{
@@ -250,7 +258,7 @@ nav ul li{
     transition:0.3s;
 }
 
-.loop-btn:hover, .shuffle-btn:hover {
+.loop-image:hover, .shuffle-image:hover {
     scale:1.05;
     color:white;
     transition:0.3s;
@@ -314,28 +322,6 @@ nav ul li{
     transition: opacity 0.7s ease-in;
 }
 
-.volume{
-    display:flex;
-    color:white;
-    align-items: center;
-}
-
-.volume .fa-volume-low{
-    height:8px;
-    color: white;
-    /* margin-bottom: 1px; */
-}
-
-#volumeProgressBar{
-    height:4px;
-    width:6vw;
-    margin: 0 8px;
-}
-
-/* .favicon {
-    scale: 1.2;
-    padding: 1px 1px;
-} */
 
 
 /* Progress-bar styling */
@@ -357,12 +343,12 @@ nav ul li{
     border-radius: 4rem;
     position: relative;
     margin: 0 10px;
-    transition: width 0.5s linear;
+    /* transition: width 0.5s linear; */
     /* For Mozilla */
-    -moz-transition: width 0.5s linear;
+    /* -moz-transition: width 0.5s linear; */
     /* For Opera */
-    -o-transition: width 0.5s linear;
-    -webkit-transition: width 0.5s linear;
+    /* -o-transition: width 0.5s linear; */
+    /* -webkit-transition: width 0.5s linear; */
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
@@ -378,19 +364,15 @@ nav ul li{
     height: 100%; /* same as parent */
     background-color: rgb(183,183,183);
     border-radius: 4rem;
-    transition: width 0.5s linear;
+    /* transition: width 0.5s linear; */
     /* For Mozilla */
-    -moz-transition: width 0.5s linear;
+    /* -moz-transition: width 0.5s linear; */
     /* For Opera */
-    -o-transition: width 0.5s linear;
-    -webkit-transition: width 0.5s linear;
+    /* -o-transition: width 0.5s linear; */
+    /* -webkit-transition: width 0.5s linear; */
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
-}
-
-.progress:hover{
-    background-color: rgb(46,193,0);
 }
 
 #current-time, #duration {
@@ -399,4 +381,52 @@ nav ul li{
     -webkit-user-select: none;
     user-select: none;
     -ms-user-select: none;
+}
+
+.volume{
+    display:flex;
+    color:white;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.fa-volume-low{
+    color: lightgray;
+}
+
+.volumeBar{
+    background-color: rgb(67,67,67);
+    width: 7vw;
+    height:5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.07), 0 4px 8px rgba(0,0,0,0.07), 0 8px 16px rgba(0,0,0,0.07), 0 16px 32px rgba(0,0,0,0.07), 0 32px 64px rgba(0,0,0,0.07);
+    border-radius: 4rem;
+    position: relative;
+    margin-right: 10px;
+    margin-top:33px;
+    /* transition: width 0.5s linear; */
+    /* For Mozilla */
+    /* -moz-transition: width 0.5s linear; */
+    /* For Opera */
+    /* -o-transition: width 0.5s linear; */
+    /* -webkit-transition: width 0.5s linear; */
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.volumeValue{
+    background-color: rgb(183,183,183);
+    width: 7vw;
+    height:5px;
+    border-radius: 4rem;
+    position: absolute;
+    /* transition: width 0.5s linear; */
+    /* For Mozilla */
+    /* -moz-transition: width 0.5s linear; */
+    /* For Opera */
+    /* -o-transition: width 0.5s linear; */
+    /* -webkit-transition: width 0.5s linear; */
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
 }

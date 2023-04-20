@@ -6,13 +6,19 @@ var currAudio = new Audio("songs/Bandeh_IndianOcean.mp3");
 var masterPlay = document.getElementById("masterPlay"); 
 // The play-button at bottom-center
 var songProgressBar = document.getElementById("songProgressBar");
+var volumeBar = document.getElementById("volumeBar");
+var volumeValue = document.getElementById("volumeValue");
 var playerGif = document.getElementById("player-gif");
 var songItems = Array.from(document.getElementsByClassName("songItem"));
 var currSongName = document.getElementsByClassName("current-song-name")[0];
 var currSongCover = document.getElementsByClassName("current-song-cover")[0];
 var currArtist = document.getElementsByClassName("current-artist")[0];
-var currSongIndex = -1;
+var currSongIndex = 0;
 var playPauseText = document.getElementsByClassName("play-pause-text")[0];
+var volumeIcon = document.getElementsByClassName("fa-volume-low")[0];
+var isMute = 0;
+var audioVolume = 1; // default
+var volumeHoverText = document.getElementsByClassName("volume-btn")[0].getElementsByClassName("hover-btn-text")[0];
 
 
 
@@ -35,7 +41,7 @@ var songs = [
     {songName: "Brown Man's Funk", artist:"The Revisit Project", duration:"3:26", filePath: "songs/BrownMansFunk_TRP.mp3", coverPath: "covers/BrownMansFunk_TRP.jpg"}
 ]
 
-// Can also set cover-image, artist-name, and others for each song (in JS)
+// Can also set cover-image, artist-name, and others for each song (here)
 
 /*
 songItems.forEach((song, i)=>{
@@ -53,22 +59,28 @@ songItems.forEach((song, i)=>{
 const playMusic = () => {
     playPauseText.innerText = "Pause";
     // Either paused or not started playing
+    currAudio.src = songs[currSongIndex].filePath;
+    // Also update the bottom song-info.
+    //    (showing which song is playing currently)
+    currSongName.innerText = songs[currSongIndex].songName;
+    currSongCover.src = songs[currSongIndex].coverPath;
+    currArtist.innerText = songs[currSongIndex].artist;
+    masterPlay.classList.remove("fa-circle-play");
+    masterPlay.classList.add("fa-circle-pause");
     currAudio.play();
-    // Also Replace the play-icon to pause-icon (on webpage)
-    masterPlay.classList.replace("fa-circle-play", "fa-circle-pause");
     // Also start showing the gif
     playerGif.style.opacity = 1;
-    // Also convert the play button of songItem --> pause.
-    if(currSongIndex == -1) {
-        // Means no song selected from above.. directly play button pressed
-        currSongIndex = 0;
-        // By default --> Bandeh will play
-    }
+    // Reset all buttons to play
+    makeAllPlayable();
+    // Now set the songItem-button to pause
     var idstr = currSongIndex.toString();
-    var getBtn = document.getElementById(idstr);
-    // console.log("idstr - ",idstr, getBtn);
-    getBtn.classList.remove("fa-circle-play");
-    getBtn.classList.add("fa-circle-pause");
+    var targetBtn = document.getElementById(idstr);
+    targetBtn.classList.remove("fa-circle-play");
+    targetBtn.classList.add("fa-circle-pause");
+    // Also updating song-duration below
+    var currDuration = songs[currSongIndex].duration;
+    var duration = document.getElementById("duration");
+    duration.innerText = currDuration;
 };
 
 const pauseMusic = () => {
@@ -108,7 +120,6 @@ document.addEventListener("keydown", event => {
 // Working on Progress-bar change
 
 currAudio.addEventListener("timeupdate", (event) => {
-    // console.log(event);
     // There is a property of (event)-object as :-
     // srcElement
     //    -> currentTime (has duration played)
@@ -116,7 +127,7 @@ currAudio.addEventListener("timeupdate", (event) => {
     //    -> duration (has total duration)
     var currTime = event.srcElement.currentTime;
     var duration = event.srcElement.duration;
-    console.log(currTime, duration);
+    // console.log(currTime, duration);
     var percentValue = ((currTime / duration) * 100);
     var progress = document.getElementById("progress");
     progress.style.width = `${percentValue}%`;
@@ -133,6 +144,9 @@ currAudio.addEventListener("timeupdate", (event) => {
     }
 })
 
+
+// Adding transitions to song-progress-bar & volume-bar (same transitions)
+
 songProgressBar.addEventListener("mouseenter", ()=>{
     var progress = document.getElementById("progress");
     progress.style.backgroundColor = "rgb(46,193,0)";
@@ -143,32 +157,52 @@ songProgressBar.addEventListener("mouseout", ()=>{
     progress.style.backgroundColor = "rgb(183,183,183)";
 })
 
-
-/*
-// Handle Progress-bar auto-change
-currAudio.addEventListener("timeupdate", ()=>{
-    // console.log("timeupdate");
-    // Update progress-bar of song
-    // Calculating percentage of audio played
-    progress = parseInt((currAudio.currentTime * 100) / currAudio.duration);
-    // console.log(progress);
-    songProgressBar.value = progress;
+volumeBar.addEventListener("mouseenter", ()=>{
+    var progress = document.getElementById("volumeValue");
+    progress.style.backgroundColor = "rgb(46,193,0)";
 })
-*/
+
+volumeBar.addEventListener("mouseout", ()=>{
+    var progress = document.getElementById("volumeValue");
+    progress.style.backgroundColor = "rgb(183,183,183)";
+})
+
 
 // Handle Progress-bar custom-change
-songProgressBar.addEventListener("change", (event)=>{
-    var currTime = event.srcElement.currentTime;
-    var duration = event.srcElement.duration;
-    currAudio.currentTime = parseInt((currTime * duration) / 100);
-})
 
+songProgressBar.addEventListener("click", (event)=>{
+    // console.log(event);
+    // (event)-object has following properties :-
+    //    srcElement.clientWidth  -->  total width of bar
+    //    offsetX  -->  the width (from left-->) at which it is clicked
+    var totalLen = event.srcElement.clientWidth;
+    var targetLen = event.offsetX;
+    var percentValue = ((targetLen / totalLen) * 100);
+    // We need this percent-value in seconds (of the total duration of song)
+    var totalDuration = currAudio.duration;
+    var targetDuration = ((percentValue*totalDuration) / 100);
+    console.log(percentValue, targetDuration);
+    currAudio.currentTime = targetDuration;
+    // Also update the currTime
+    var currentTime = document.getElementById("current-time");
+    currTime = parseInt(targetDuration);
+    var minutes = parseInt(targetDuration / 60);
+    var seconds = parseInt(targetDuration % 60);
+    if(seconds < 10) {
+        currentTime.innerText = `${minutes}:${0}${seconds}`;
+    }
+    else {
+        currentTime.innerText = `${minutes}:${seconds}`;
+    }
+    // Also update the width of progress-bar
+    var progress = document.getElementById("progress");
+    progress.style.width = `${percentValue}%`;
+})
 
 
 // Make all Buttons playable
 // If pause button, resets.
 // And if play button, nothing will happen.
-//    (it will just keep playing).
 
 const makeAllPlayable = ()=>{
     Array.from(document.getElementsByClassName("songItem-play")).forEach((btn)=>{
@@ -183,44 +217,12 @@ songItemPlayBtns = document.getElementsByClassName("songItem-play");
 Array.from(songItemPlayBtns).forEach((btn)=>{
     btn.addEventListener("click", (e)=>{
         var index = parseInt(e.target.id);
-        if(currSongIndex == -1) {
-            currSongIndex = 0; // initialize
-        }
         if(currSongIndex != index) {
-            // Just change the song.
-            // And start playing it.
-            // Change the song & play it
-            // console.log(e.target);
-            // Just verifying if right-button is working.
-            // First reset all buttons to play.
-            makeAllPlayable();
-            playPauseText.innerText = "Pause";
             e.target.classList.replace("fa-circle-play", "fa-circle-pause");
-            // Replaced the play -> pause button
-            // Also set the song to play
-
-            // We have to just convert this hard code to the corresponding song.
-            var index = parseInt(e.target.id);
-            currAudio.src = songs[index].filePath;
-            // Also update currSongIndex variable
+            // Set the current-song index
             currSongIndex = index;
-            // Updating duration in bottom-area
-            var currDuration = songs[currSongIndex].duration;
-            var duration = document.getElementById("duration");
-            duration.innerText = currDuration;
-            // Also update the bottom song-info.
-            //    (showing which song is playing currently)
-            currSongName.innerText = songs[index].songName;
-            currSongCover.src = songs[index].coverPath;
-            currArtist.innerText = songs[index].artist;
-            // Also change the bottom play-pause buttons accordingly
-            masterPlay.classList.remove("fa-circle-play");
-            masterPlay.classList.add("fa-circle-pause");
-            // Also set current time to 0
-            currAudio.currentTime = 0;
-            currAudio.play();
-            // Also start showing the gif
-            playerGif.style.opacity = 1;
+            // Below function automatically plays the song.
+            playMusic();
         }
         else { // A same-song click
             if(currAudio.paused || currAudio.currentTime<=0) { // Play the song
@@ -242,8 +244,6 @@ Array.from(songItemPlayBtns).forEach((btn)=>{
                 e.target.classList.replace("fa-circle-pause", "fa-circle-play");
             }
         }
-
-        
     })
 })
 
@@ -270,40 +270,44 @@ Array.from(controlBtns).forEach((btn)=>{
 var prevBtn = document.getElementsByClassName("previous-btn")[0];
 
 prevBtn.addEventListener("click", ()=>{
-    if(currSongIndex == -1) {
-        currSongIndex = 0; // first initialize
+    // Now, the previous song should come randomly if shuffle is on.
+    // And, if loop-one is on, current song should start playing again.
+    // And, if loop-all is there, previous song should play.
+    //     --> Just change the way indices are changing.
+    if(loopIndex == 0) {
+        // loop-off
+        if(shuffleIndex == 0) {
+            // shuffle-off (just go to next song)
+            if(currSongIndex == 0) {
+                currSongIndex = 10;
+            }
+            else {
+                currSongIndex = ((currSongIndex-1) % 11);
+            }
+        }
+        else {
+            // shuffle-on (go to random song)
+            var newIndex = Math.floor((Math.random()*11));
+            // Random no. between [0-10]
+            currSongIndex = newIndex;
+        }
     }
-    if(currSongIndex == 0) {
-        currSongIndex = 10;
+    else if(loopIndex == 1) { 
+        // start next-audio
+        if(currSongIndex == 0) {
+            currSongIndex = 10;
+        }
+        else {
+            currSongIndex = ((currSongIndex-1) % 11);
+        }
     }
     else {
-        currSongIndex = ((currSongIndex - 1) % 11);
+        // start current-audio from beginning
+        // Nothing to do.
     }
-    currAudio.src = songs[currSongIndex].filePath;
-    // Also update the bottom song-info.
-    //    (showing which song is playing currently)
-    currSongName.innerText = songs[currSongIndex].songName;
-    currSongCover.src = songs[currSongIndex].coverPath;
-    currArtist.innerText = songs[currSongIndex].artist;
-    // Also change the bottom play-pause buttons accordingly
-    masterPlay.classList.remove("fa-circle-play");
-    masterPlay.classList.add("fa-circle-pause");
     // Also set current time to 0
     currAudio.currentTime = 0;
-    currAudio.play();
-    // Also start showing the gif
-    playerGif.style.opacity = 1;
-    // Reset all buttons to play
-    makeAllPlayable();
-    // Now set the songItem-button to pause
-    var idstr = currSongIndex.toString();
-    var targetBtn = document.getElementById(idstr);
-    targetBtn.classList.remove("fa-circle-play");
-    targetBtn.classList.add("fa-circle-pause");
-    // Also updating song-duration below
-    var currDuration = songs[currSongIndex].duration;
-    var duration = document.getElementById("duration");
-    duration.innerText = currDuration;
+    playMusic();
 })
 
 
@@ -313,35 +317,32 @@ prevBtn.addEventListener("click", ()=>{
 var nextBtn = document.getElementsByClassName("next-btn")[0];
 
 nextBtn.addEventListener("click", ()=>{
-    if(currSongIndex == -1) {
-        currSongIndex = 0; // first initialize
+    // Just changing the way, next song id determined.
+    //   --> Based on loop-button & shuffle-button (less priority)
+    if(loopIndex == 0) {
+        // loop-off
+        if(shuffleIndex == 0) {
+            // shuffle-off (just go to next song)
+            currSongIndex = ((currSongIndex+1) % 11);
+        }
+        else {
+            // shuffle-on (go to random song)
+            var newIndex = Math.floor((Math.random()*11));
+            // Random no. between [0-10]
+            currSongIndex = newIndex;
+        }
     }
-    currSongIndex = ((currSongIndex + 1) % 11);
-    currAudio.src = songs[currSongIndex].filePath;
-    // Also update the bottom song-info.
-    //    (showing which song is playing currently)
-    currSongName.innerText = songs[currSongIndex].songName;
-    currSongCover.src = songs[currSongIndex].coverPath;
-    currArtist.innerText = songs[currSongIndex].artist;
-    // Also change the bottom play-pause buttons accordingly
-    masterPlay.classList.remove("fa-circle-play");
-    masterPlay.classList.add("fa-circle-pause");
+    else if(loopIndex == 1) { 
+        // start next-audio
+        currSongIndex = ((currSongIndex+1) % 11);
+    }
+    else {
+        // start current-audio from beginning
+        // Nothing to do.
+    }
     // Also set current time to 0
     currAudio.currentTime = 0;
-    currAudio.play();
-    // Also start showing the gif
-    playerGif.style.opacity = 1;
-    // Reset all buttons to play
-    makeAllPlayable();
-    // Now set the songItem-button to pause
-    var idstr = currSongIndex.toString();
-    var targetBtn = document.getElementById(idstr);
-    targetBtn.classList.remove("fa-circle-play");
-    targetBtn.classList.add("fa-circle-pause");
-    // Also updating song-duration below
-    var currDuration = songs[currSongIndex].duration;
-    var duration = document.getElementById("duration");
-    duration.innerText = currDuration;
+    playMusic();
 })
 
 
@@ -361,20 +362,18 @@ loopBtn.addEventListener("click", ()=>{
     if(loopIndex == 0) { // loop-off --> loop-all
         loopIndex = 1; // keep updating
         // Update the loop-all icon
-        loopImage.src = "icons/loop-all.png";
+        loopImage.src = "icons/loop-all2.png";
         // Update the text
         loopTextEle.innerText = "Repeat one";
-        // And, the main thing.. start playing all songs in loop :-
-
+        // And, the main thing.. start playing all songs in loop.
     }
     else if(loopIndex == 1) { // loop-all --> loop-one
         loopIndex = 2;
         // Update the loop-all icon
-        loopImage.src = "icons/loop-one.png";
+        loopImage.src = "icons/loop-one2.png";
         // Update the text
         loopTextEle.innerText = "Disable repeat";
-        // And, the main thing.. start playing current song in loop :-
-
+        // And, the main thing.. start playing current song in loop.
     }
     else {  // loopIndex = 2  ..  loop-one --> loop-off
         loopIndex = 0;
@@ -382,8 +381,7 @@ loopBtn.addEventListener("click", ()=>{
         loopImage.src = "icons/loop-off.png";
         // Update the text
         loopTextEle.innerText = "Enable repeat";
-        // And, the main thing.. stop playing current song after it ends :- (stop looping & all)
-
+        // And, the main thing.. stop playing current song after it ends.
     }
 })
 
@@ -403,11 +401,10 @@ shuffleBtn.addEventListener("click", ()=>{
     if(shuffleIndex == 0) { // shuffle off --> on
         shuffleIndex = 1; // update index
         // Update to shuffle-on icon
-        shuffleImage.src = "icons/shuffle-on.png";
+        shuffleImage.src = "icons/shuffle-on2.png";
         // Update the hover-text
         shuffleTextEle.innerText = "Disable shuffle";
-        // And, the main thing.. now onwards play song randomly from collection :-
-
+        // And, the main thing.. now onwards play song randomly from collection.
     }
     else { // shuffle on --> of
         shuffleIndex = 0; // update index
@@ -415,9 +412,94 @@ shuffleBtn.addEventListener("click", ()=>{
         shuffleImage.src = "icons/shuffle-off.png";
         // Update the hover-text
         shuffleTextEle.innerText = "Enable shuffle";
-        // And, the main thing.. now onwards play song in the order :-
-
+        // And, the main thing.. now onwards play next song in the order.
     }
 })
 
 
+// Loop > Shuffle  (on priority)
+// So, shuffle will only work, when loop is off
+
+// Add event on currAudio ending.
+
+currAudio.addEventListener("ended", ()=>{
+    if(loopIndex == 0) {
+        // loop-off
+        if(shuffleIndex == 0) {
+            // shuffle-off (just go to next song)
+            currSongIndex = ((currSongIndex+1) % 11);
+        }
+        else {
+            // shuffle-on (go to random song)
+            var newIndex = Math.floor((Math.random()*11));
+            // Random no. between [0-10]
+            currSongIndex = newIndex;
+        }
+    }
+    else if(loopIndex == 1) { 
+        // start next-audio
+        currSongIndex = ((currSongIndex+1) % 11);
+    }
+    else {
+        // start current-audio from beginning
+        // Nothing to do.
+    }
+    playMusic();
+})
+
+
+// Working on Volume-controller
+
+// Custom-change volume of audio playing (similar to song-progress-bar)
+
+volumeBar.addEventListener("click", (event)=>{
+    // (event)-object has following properties :-
+    //    srcElement.clientWidth  -->  total width of bar
+    //    offsetX  -->  the width (from left-->) at which it is clicked
+    var totalLen = event.srcElement.clientWidth;
+    var targetLen = event.offsetX;
+    var percentValue = ((targetLen / totalLen) * 100);
+    // Set the volume of audio, to this percent of total-volume.
+    var totalVolume = audioVolume;
+    var newVolume = (percentValue / 100);
+    currAudio.volume = newVolume;
+    // Also set width of volumeValue
+    volumeValue.style.width = `${percentValue}%`;
+    // Also update audioVolume
+    audioVolume = newVolume;
+    // If mute, then also unmute.
+    if(isMute == 1) {
+        isMute = 0;
+        // Change the volume-icon color
+        volumeIcon.style.color = "lightgray";
+        // Also change hover text
+        volumeHoverText.innerText = "Mute";
+    }
+})
+
+// Mute <-> Unmute
+
+volumeIcon.addEventListener("click", ()=>{
+    if(isMute == 0) { // mute the audio
+        isMute = 1;
+        volumeIcon.style.color = "gray";
+        currAudio.volume = 0; // but don't alter audioVolume
+        // It keeps the old-volume saved.
+        //    --> When unmuted, switch to this value
+        // Also change the hover text.
+        volumeHoverText.innerText = "Unmute";
+        // Also change volumeValue
+        var percentValue = 0;
+        volumeValue.style.width = `${percentValue}%`;
+    }
+    else { // unmute the audio (with old value)
+        isMute = 0; // So we can mute it again (if required)
+        currAudio.volume = audioVolume;
+        volumeIcon.style.color = "lightgray";
+        // Also change hover text
+        volumeHoverText.innerText = "Mute";
+        // Also change volumeValue
+        var percentValue = (audioVolume * 100);
+        volumeValue.style.width = `${percentValue}%`;
+    }
+});
