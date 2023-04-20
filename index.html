@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotifyy</title>
-    <link rel="icon" type="image/x-icon" href="images/spotify-favicon.png">
+    <title>Spotify - The Indie Sounds</title>
+    <link rel="icon" type="image/x-icon" class="favicon" href="images/treble-clef.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -143,6 +143,10 @@
         <div class="progress-and-icons">
             <div class="icons">
                 <!-- Fontawesome icons of buttons (play/pause, prev, next, ..) -->
+                <div class="controls shuffle-btn shuffle-off" id="s0">
+                    <div class="hover-btn-text">Enable shuffle</div>
+                    <img class="shuffle-image" src="icons/shuffle-off.png">
+                </div>
                 <div class="controls previous-btn">
                     <div class="hover-btn-text">Previous</div>
                     <i class="fa-sharp fa-solid fa-backward-step"></i>
@@ -155,16 +159,32 @@
                     <div class="hover-btn-text">Next</div>
                     <i class="fa-solid fa-forward-step"></i>
                 </div>
-                
-                <!-- <object data="font-awesome-icons/circle-play-regular.svg" height="100" width="100"></object> -->
+                <div class="controls loop-btn loop-off" id="l0">
+                    <div class="hover-btn-text">Enable repeat</div>
+                    <img class="loop-image" src="icons/loop-off.png">
+                </div>
             </div>
-            <input type="range" name="" id="songProgressBar" value="0" min="0" max="100">
+            <div class="progressBar" id="progressBar">
+                <div id="current-time">0:00</div>
+                <!-- Progress-bar -->
+                <!-- It's kind of grows inside another div -->
+                <div class="songProgressBar" id="songProgressBar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div id="duration">7:48</div>
+            </div>
+
+
+            <!-- Just comment out if something goes wrong -->
+
+            <!-- <input type="range" name="" id="songProgressBar" value="0" min="0" max="100"> -->
             <!-- value of input-range type sets the default-value. -->
         </div>
         <div class="volume">
-            <div class="fa-volume">
+            <i class="fa-solid fa-volume-low"></i>
+            <!-- <div class="fa-volume">
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA+UlEQVR4nO2WvQrCMBSFAwo66GhVEF/AdxEXJ5/Bn8UX0lGfobOuIi3qU/gz+0nlFkJpB2NNRHuWcm5TzteEm0SpQoUMBTSUKwEesHMV3gJCABfhTWAfhVsHIBFuFQBt2rVnKgDQBeafDG9lAQAlIADuwMA0MEvPcH1MxvdTeX0CynkBBHF4GgDQAdZAVZuFSENjAPXCGMCX0iQxC0tbACMpbcX3xB9sAXhSuomvib/aAmhL6SK+Lv5sewk2rpbAl9JY/Ez8whjAoA1XQEXaMHy7Dd/YiOK/PxptRDluxX31E4dRotfdHMdZEOrvrmRfcSn9imt5oZ/SAzTYuva8KOs2AAAAAElFTkSuQmCC">
-            </div>
+            </div> -->
             <div>
                 <input type="range" name="" id="volumeProgressBar" min="0" max="100">
             </div>

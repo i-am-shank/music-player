@@ -20,6 +20,10 @@ body{
 /* Change the overall navigation-bar font */
 nav{
     font-family: 'Ubuntu', sans-serif;
+    /* Also disabling text-selection, it just looks wierd */
+    -webkit-user-select: none;
+    user-select: none;
+    -ms-user-select: none;
 }
 
 nav ul{
@@ -75,10 +79,14 @@ nav ul li{
     padding:34px;
     /* For better placing of text inside container */
     /* background-image: url("images/bg.jpg"); */
-    background-image: url("images/bg_cd.jpg");
+    background-image: url("Background/cassete2b.jpg");
     background-position: center;
     background-size:cover;
     background-repeat: no-repeat;
+    /* Also disabling text-selection, it just looks wierd */
+    -webkit-user-select: none;
+    user-select: none;
+    -ms-user-select: none;
 }
 
 .songList{
@@ -180,13 +188,14 @@ nav ul li{
     color:white;
 }
 
-/* To increase separation between progress-bar & play-prev-next buttons */
+/* To control the separation between progress-bar & play-prev-next buttons */
 .icons {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    /* margin-left: 32.5%; */
+    justify-content: center;
+    margin: 0 60px 10px 60px;
+    /* top-right-bottom-left */
 }
 
 .controls{
@@ -198,6 +207,12 @@ nav ul li{
     /* Fixing width, as buttons are getting aligned according to their hidden hover text-size */
 }
 
+.loop-image, .shuffle-image{
+    width: 25px;
+    margin-bottom:17px;
+    height: 25px;
+}
+
 .hover-btn-text{
     font-family: 'Varela Round', sans-serif;
     background-color: darkslategray;
@@ -205,6 +220,7 @@ nav ul li{
     padding:4px;
     text-align: center;
     width:auto;
+    /* max-height: 20px; */
     font-size:smaller;
     margin-bottom:10px;
     opacity:0; /* will do 1 when hover */
@@ -213,9 +229,9 @@ nav ul li{
 }
 
 /* Switch cursor to hand.. over play-prev-next buttons */
-.icons i{
+.icons i, .loop-btn, .shuffle-btn{
     cursor: pointer;
-    margin: 0 10px;
+    margin: 0 5px;
 }
 
 .icons .fa-circle-play:hover , .icons .fa-circle-pause:hover{
@@ -234,11 +250,18 @@ nav ul li{
     transition:0.3s;
 }
 
+.loop-btn:hover, .shuffle-btn:hover {
+    scale:1.05;
+    color:white;
+    transition:0.3s;
+}
+
 .progress-and-icons{
     display:flex;
     flex-direction:column;
     align-items: center;
     margin-right:17%;
+    padding-bottom:20px;
 }
 
 .songInfo{
@@ -291,42 +314,89 @@ nav ul li{
     transition: opacity 0.7s ease-in;
 }
 
-#songProgressBar {
-    width: 35vw;
-    height:4px;
-    /* text-align: center; */
-    /* If this was a container.. this would have centered the text inside this. But here it won't work */
-    /* To center the content, can use flex-box */
-    cursor: pointer;
-    margin-bottom:10px;
-}
-
-/* Styling progress-bar using kit of HTML5 progress bar. (some specified selectors are there) */
-#songProgressBar::-webkit-progress-bar {
-    background-color:gray;
-    border-radius: 7px;
-}
-
-#songProgressBar::-webkit-progress-value {
-    background-color:green;
-    color:green;
-}
-
 .volume{
     display:flex;
     color:white;
     align-items: center;
 }
 
-.volume .fa-volume{
+.volume .fa-volume-low{
     height:8px;
     color: white;
-    margin-bottom: 1px;
+    /* margin-bottom: 1px; */
 }
 
 #volumeProgressBar{
     height:4px;
     width:6vw;
-    margin-right:5px;
-    margin-top:25px;
+    margin: 0 8px;
+}
+
+/* .favicon {
+    scale: 1.2;
+    padding: 1px 1px;
+} */
+
+
+/* Progress-bar styling */
+
+.progressBar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom:10px;
+    font-family: 'Varela Round', sans-serif;
+    font-size: 12px;
+}
+
+.songProgressBar {
+    background-color: rgb(67,67,67);
+    width: 35vw;
+    height:5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.07), 0 4px 8px rgba(0,0,0,0.07), 0 8px 16px rgba(0,0,0,0.07), 0 16px 32px rgba(0,0,0,0.07), 0 32px 64px rgba(0,0,0,0.07);
+    border-radius: 4rem;
+    position: relative;
+    margin: 0 10px;
+    transition: width 0.5s linear;
+    /* For Mozilla */
+    -moz-transition: width 0.5s linear;
+    /* For Opera */
+    -o-transition: width 0.5s linear;
+    -webkit-transition: width 0.5s linear;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.progress{
+    /* To overlap over songProgressBar
+    that was positioned relative */
+    position: absolute;
+    top:0;
+    left:0;
+    /* width: 50%; */
+    height: 100%; /* same as parent */
+    background-color: rgb(183,183,183);
+    border-radius: 4rem;
+    transition: width 0.5s linear;
+    /* For Mozilla */
+    -moz-transition: width 0.5s linear;
+    /* For Opera */
+    -o-transition: width 0.5s linear;
+    -webkit-transition: width 0.5s linear;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.progress:hover{
+    background-color: rgb(46,193,0);
+}
+
+#current-time, #duration {
+    cursor: default;
+    /* Also disabling text-selection, it just looks wierd */
+    -webkit-user-select: none;
+    user-select: none;
+    -ms-user-select: none;
 }
