@@ -9,6 +9,7 @@
 body{
     /* background-color:antiquewhite; */
     background:linear-gradient(RGB(17 55 6), RGB(15 43 7), black);
+    height: 100%;
 }
 
 /* Universal-selector --> good practice */
@@ -24,6 +25,7 @@ nav{
     -webkit-user-select: none;
     user-select: none;
     -ms-user-select: none;
+    width: 100%;
 }
 
 nav ul{
@@ -95,22 +97,25 @@ nav ul li{
 
 .songList h1{
     color:lightgray;
-    font-size: 53px;
+    font-size: 3.45vw;
 }
 
 /* To fit the song-image to a better smaller size. */
 .songItem{
     cursor:default;
     /* Prevents cursor from changing to text-editor cursor. */
-    height:32px;
+    /* height:32px; */
+    height: 2.8vw;
     display:flex;
     background-color: grey;
     color:black;
     /* As bg got white */
     margin:12px 0;
     /* Only putting top-bottom margin */
-    padding: 11px 7px;
-    font-size: 16px;
+    /* padding: 11px 7px; */
+    padding: 0.34vw 0.47vw;
+    /* font-size: 16px; */
+    font-size: 1.03vw;
     text-align: center;
     /* To get a better visual of text-inside */
     justify-content:space-between;
@@ -128,7 +133,8 @@ nav ul li{
 }
 
 .artist-name{
-    font-size:small;
+    /* font-size:small; */
+    font-size: 0.83vw;
     font-weight:lighter;
     color:darkslategray;
 }
@@ -139,10 +145,13 @@ nav ul li{
 }
 
 .songItem img{
-    width: 43px;
-    margin: 0 10px 0 3px;
+    /* width: 43px; */
+    width: 2.8vw;
+    /* margin: 0 10px 0 3px; */
+    margin: 0 1vw 0 0.3vw;
     /* Giving top-right-bottom-left margins to song-image */
-    border-radius:43px;
+    /* border-radius:43px; */
+    border-radius:2.8vw;
 }
 
 .songItem i:hover{
@@ -166,7 +175,8 @@ nav ul li{
 }
 
 .songItemContainer{
-    margin-top:50px;
+    /* margin-top:50px; */
+    margin-top: 3vw;
 }
 
 
@@ -176,8 +186,9 @@ nav ul li{
 /* Coloring black */
 .bottom{
     position: sticky;
-    height: 130px;
-    padding: 0 15px;
+    /* height: 130px; */
+    height: 8.5vw;
+    padding: 0 1.5vw;
     background-color: black;
     bottom: 0;
     display: flex;
@@ -312,8 +323,10 @@ nav ul li{
 }
 
 .current-song-cover{
-    width:80px;
-    margin-left:10px;
+    /* width:80px; */
+    width: 5vw;
+    /* margin-left:10px; */
+    /* margin-left: 0.1vw; */
     /* border:solid 2px gray; */
     border-left: solid 4px darkolivegreen;
     padding-left:4px;
@@ -433,4 +446,43 @@ nav ul li{
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
+}
+
+
+
+@media(max-width:700px) {
+    .body{
+        width: 100vw;
+        height: 100vh;
+        font-size: small;
+    }
+
+    .container{
+        width: 90vw;
+    }
+
+    .songList{
+        width: 80vw;
+    }
+
+    .bottom{
+        width: 100vw;
+    }
+
+    .curr-song-cover{
+        width: 15vw;
+    }
+
+    .songItem img{
+        width: 6vw;
+    }
+
+    .songItem{
+        height: 6vw;
+        font-size: 1.5vw;
+    }
+
+    .artist-name{
+        font-size: 1vw;
+    }
 }
